@@ -35,6 +35,7 @@
     {
       "from": "Inverse-button/Content/State-layer/Label",
       "to": "action-slot/Inverse-button/Content/State-layer/Label",
+      "// notListedInUI": "EXPECTED: this target path is NOT selectable from the plugin's dropdown, and that is a plugin limitation, not an error in this row. The UI builds its target list from `comp.createInstance()`, which instantiates the component set's DEFAULT variant — `Configuration=Text only`, which contains no `action-slot` and no `Inverse-button` at all. So the dropdown offers `Supporting text` as its only text layer. The APPLY path is different: it indexes the real swapped instance, which keeps this instance's own `Configuration=Text & action`, so this path genuinely resolves at apply time. Authoring it here is currently the ONLY way to map the button label.",
       "note": "THE BUTTON LABEL ('Add to Basket'). Mapped explicitly because the path changed: the button was a direct child of the root and now sits inside the `action-slot` SLOT, so identical-path auto-mapping cannot find it. Verified in the live file that the two buttons have IDENTICAL internals — old 64796:7880 and new 64796:8699 are both `Content/State-layer/{Icon, Label}` — so the leaf path lines up exactly and the text override replays cleanly. An earlier revision of this scheme dropped `Inverse-button` outright on the theory that the re-base (`Button - text` -> `Button - tonal`) left nothing to replay onto; that was wrong, and the visible symptom was the label resetting to the new component's default on every migration."
     },
     {

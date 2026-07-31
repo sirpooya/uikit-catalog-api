@@ -1,0 +1,63 @@
+{
+  "$schema": "https://github.com/sirpooya/figma-instance-migrator/blob/main/schemes/scheme.schema.md",
+  "schemeVersion": 1,
+  "baseName": "Snackbar",
+
+  "// about": "Sample mapping scheme for the Instance Migrator plugin, authored from the Sample Kit Playground pair below. It demonstrates the case Figma's native swap cannot handle: a layer that MOVED INTO A SLOT. Structures were read from the live file; see agentNotes for what is verified and what still needs filling in.",
+
+  "old": {
+    "name": "Snackbar [deprecated]",
+    "key": "b00f5e855c086b0ab4653a1e6d023b67bb679202",
+    "node": "64796-7861"
+  },
+  "new": {
+    "name": "Snackbar",
+    "key": "cd1ec1f5d32cb055b172842a8621027c13c65f53",
+    "node": "64796-8680"
+  },
+
+  "// map": "Old nodePath -> new nodePath, or null to drop. The third entry is the whole point of this sample: `Inverse-button` was a direct child of the root and is now nested inside the `action-slot` SLOT, so no name- or path-based heuristic finds it.",
+  "map": [
+    {
+      "from": "content",
+      "to": "content",
+      "note": "Unchanged path. Listed for self-documentation; it would auto-map."
+    },
+    {
+      "from": "content/Supporting text",
+      "to": "content/Supporting text",
+      "note": "Unchanged path. Carries the snackbar's text override."
+    },
+    {
+      "from": "Inverse-button",
+      "to": "action-slot/Inverse-button",
+      "note": "REPARENTED. Old: direct child of the root instance. New: inside the `action-slot` SLOT. This is the mapping native swap drops."
+    },
+    {
+      "from": "deprecated",
+      "to": null,
+      "note": "The red overlay marking the component as deprecated. It has no counterpart in the replacement, by design — dropped deliberately."
+    }
+  ],
+
+  "// props": "Empty on purpose. Both component sets expose the SAME variant properties with the same names (Configuration, # of lines, Show close affordance), and identically-named props are applied automatically — so there is nothing to rename, retype or drop.",
+  "props": [],
+
+  "// values": "Empty on purpose. Every old value has a 1:1 path target in the new tree (see map[]); nothing has to become a property, merge or split.",
+  "values": [],
+
+  "// slots": "Old SLOT path -> new SLOT path. REQUIRED here rather than optional: the plugin auto-matches a slot by identical path, then by unique leaf name, then by being the sole slot on both sides. All three fail for this pair — the paths differ, the leaf names differ (`slot` vs `bottom slot`), and the new component has TWO slots — so without this entry the plugin correctly refuses to guess and reports the slot unmatched.",
+  "slots": [
+    {
+      "from": "content/slot",
+      "to": "content/bottom slot",
+      "note": "Whatever the designer dropped into the old `slot` is rebuilt into `bottom slot`. Note the new slot ships hidden; the restore makes it visible by placing content in it."
+    }
+  ],
+
+  "// drop": "Old paths whose overrides are knowingly discarded. Silences the 'unmapped' warning and records that it was a decision.",
+  "drop": ["deprecated"],
+
+  "// agentNotes": "See below.",
+  "agentNotes": "VERIFIED from the live file (Sample Kit Playground, zO662vC0476nlRFJg85RBR) via Figma Dev Mode: both subtrees were read node by node. Old = content{Supporting text, slot{stuff, Rectangle 1}}, Inverse-button, deprecated. New = content{Supporting text, bottom slot}, action-slot{Inverse-button}. Both are COMPONENT_SETs with the same 10 variants and identical variant property names.  ||  KEYS ARE REAL, read from GET /v1/files/zO662vC0476nlRFJg85RBR/component_sets: old b00f5e85… (node 64796:7861), new cd1ec1f5… (node 64796:8680). Both node ids match the subtrees inspected above, so the keys and the structure describe the same pair. Note that published keys are NOT obtainable from Dev Mode / the MCP server — only from the REST API with a token, or from inside a plugin.  ||  DELIBERATELY NOT MAPPED: `content/slot/stuff` and `content/slot/Rectangle 1`. They live inside a SLOT, so the plugin flags them `inSlot` and its slot capture/restore pair rebuilds them. Naming them in map[] would override that and make the generic override replay fight the restore. Slot children are handled by slots[], never by map[]."
+}

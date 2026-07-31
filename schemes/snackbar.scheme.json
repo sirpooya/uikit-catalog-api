@@ -8,12 +8,14 @@
   "old": {
     "name": "Snackbar [deprecated]",
     "key": "b00f5e855c086b0ab4653a1e6d023b67bb679202",
-    "node": "64796-7861"
+    "node": "64796-7861",
+    "sampleInstance": "64801-9444"
   },
   "new": {
     "name": "Snackbar",
     "key": "cd1ec1f5d32cb055b172842a8621027c13c65f53",
-    "node": "64796-8680"
+    "node": "64796-8680",
+    "sampleInstance": "64801-9613"
   },
 
   "// map": "Old nodePath -> new nodePath, or null to drop. The third entry is the whole point of this sample: `Inverse-button` was a direct child of the root and is now nested inside the `action-slot` SLOT, so no name- or path-based heuristic finds it.",
@@ -21,7 +23,7 @@
     {
       "from": "content",
       "to": "content",
-      "note": "Unchanged path. Listed for self-documentation; it would auto-map."
+      "note": "Unchanged path. Listed for self-documentation; it would auto-map. Internal layout differs (old aligns items-start, new centers them) but that is the component's own definition, not an override, so nothing to carry across."
     },
     {
       "from": "content/Supporting text",
@@ -31,12 +33,12 @@
     {
       "from": "Inverse-button",
       "to": "action-slot/Inverse-button",
-      "note": "REPARENTED. Old: direct child of the root instance. New: inside the `action-slot` SLOT. This is the mapping native swap drops."
+      "note": "REPARENTED *and* RE-BASED. Old: direct child of the root instance, and itself an instance of `Button - text` (58650:8094) at 48px tall with a transparent container. New: sits inside the `action-slot` SLOT and is an instance of `Button - tonal` (58651:11237) at 40px tall with an rgba(232,222,248,0.3) container. The reparenting is the mapping native swap drops; the different backing component means only the label text replays — any nested overrides inside the old text-button (colors, state layer, icon slot) have no counterpart and are lost."
     },
     {
       "from": "deprecated",
       "to": null,
-      "note": "The red overlay marking the component as deprecated. It has no counterpart in the replacement, by design — dropped deliberately."
+      "note": "The full-bleed overlay marking the component as deprecated (green, #11FF00 at 50% opacity, absolutely positioned over the whole 344x130 frame). It has no counterpart in the replacement, by design — dropped deliberately."
     }
   ],
 
@@ -59,5 +61,5 @@
   "drop": ["deprecated"],
 
   "// agentNotes": "See below.",
-  "agentNotes": "VERIFIED from the live file (Sample Kit Playground, zO662vC0476nlRFJg85RBR) via Figma Dev Mode: both subtrees were read node by node. Old = content{Supporting text, slot{stuff, Rectangle 1}}, Inverse-button, deprecated. New = content{Supporting text, bottom slot}, action-slot{Inverse-button}. Both are COMPONENT_SETs with the same 10 variants and identical variant property names.  ||  KEYS ARE REAL, read from GET /v1/files/zO662vC0476nlRFJg85RBR/component_sets: old b00f5e85… (node 64796:7861), new cd1ec1f5… (node 64796:8680). Both node ids match the subtrees inspected above, so the keys and the structure describe the same pair. Note that published keys are NOT obtainable from Dev Mode / the MCP server — only from the REST API with a token, or from inside a plugin.  ||  DELIBERATELY NOT MAPPED: `content/slot/stuff` and `content/slot/Rectangle 1`. They live inside a SLOT, so the plugin flags them `inSlot` and its slot capture/restore pair rebuilds them. Naming them in map[] would override that and make the generic override replay fight the restore. Slot children are handled by slots[], never by map[]."
+  "agentNotes": "RE-VERIFIED 2026-07-31 against the playground instances the maintainer supplied: deprecated = node 64801-9444, replacement = node 64801-9613 (recorded as old.sampleInstance / new.sampleInstance). Those instances resolve to component sets 64796:7861 and 64796:8680 respectively, i.e. the same pair this scheme already targeted — map[], slots[], props[] and values[] all still hold. Three details were corrected in this pass: (1) the `deprecated` overlay is GREEN (#11FF00 @ 50%), not red as previously written; (2) the action button is not merely reparented, it is re-based onto a DIFFERENT component — `Button - text` (58650:8094, 48px, transparent) becomes `Button - tonal` (58651:11237, 40px, rgba(232,222,248,0.3)) — so only its label survives the swap; (3) `content` switches from items-start to centered, which is component-internal and needs no mapping.  ||  ORIGINALLY VERIFIED from the live file (Sample Kit Playground, zO662vC0476nlRFJg85RBR) via Figma Dev Mode: both subtrees were read node by node. Old = content{Supporting text, slot{stuff, Rectangle 1}}, Inverse-button, deprecated. New = content{Supporting text, bottom slot}, action-slot{Inverse-button}. Both are COMPONENT_SETs with the same 10 variants and identical variant property names.  ||  KEYS ARE REAL, read from GET /v1/files/zO662vC0476nlRFJg85RBR/component_sets: old b00f5e85… (node 64796:7861), new cd1ec1f5… (node 64796:8680). Both node ids match the subtrees inspected above, so the keys and the structure describe the same pair. Note that published keys are NOT obtainable from Dev Mode / the MCP server — only from the REST API with a token, or from inside a plugin.  ||  DELIBERATELY NOT MAPPED: `content/slot/stuff` and `content/slot/Rectangle 1`. They live inside a SLOT, so the plugin flags them `inSlot` and its slot capture/restore pair rebuilds them. Naming them in map[] would override that and make the generic override replay fight the restore. Slot children are handled by slots[], never by map[]."
 }
